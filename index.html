@@ -2,10 +2,14 @@
 <html lang="en">
 <head>
 	<!-- TODO
-update with font awesome icons downloaded from website
-add title and options: move length, infinite repeat or no?
-repeat for x moves, x time, or x games
+
+make a modal for my stuff
+more options:
+repeat for x moves, x time, or x games?
 multiple games going at once?
+
+all files local so can easily be converted to web app or desktop app
+
 edit css
 	 -->
 
@@ -14,17 +18,19 @@ edit css
 <meta name="title=" content="Random Chess">
 <meta name="robots" content="index, follow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="Watch random games of chess. Pass the time or a fun screensaver.">
+<meta name="description" content="Watch random games of chess. Pass the time or use as a fun screensaver">
 <meta name="keywords" content="random chess, chess, random, screensaver, wallpaper, background, random game">
 
-<link rel="icon" href="img/chesspieces/wikipedia/bK.png" type="image/png">
+<link rel="icon" href="pieces/bK.png" type="image/png">
 
 <meta id="theme1" name="theme-color" content="#fff">
 <meta id="theme2" name="msapplication-navbutton-color" content="#fff">
 <meta id="theme3" name="apple-mobile-web-app-status-bar-style" content="#fff">
 
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<script src="jquery.js"></script>
+<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"></link>
 <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous"> -->
 
@@ -32,11 +38,29 @@ edit css
 <script src="chessboardjs/js/chessboard-0.3.0.min.js"></script>
 <link rel="stylesheet" href="chessboardjs/css/chessboard-0.3.0.min.css">
 
-<h3>Random Chess</h3>
+<style type="text/css">
+  body {
+    margin: 20px;
+  }
+  ::-moz-selection {
+    background: #ccc;
+  }
+  ::selection {
+    background: #ccc;
+  }
+</style>
+
+</head>
+<body>
+
+<h3> <img src="icon-chess.svg" width="32px"> Random Chess <img src="icon-chess.svg" width="32px"> </h3>
+<p>Watch random games of chess. Pass the time or use as a fun screensaver</p>
+
 
 <div id="board" style="width: 400px"></div>
 Moves this game: <span id="numMovesCurrent">0</span>
 
+<hr>
 <h3>Settings</h3>
 
 <input id="repeat" checked type="checkbox">
@@ -46,6 +70,8 @@ Moves this game: <span id="numMovesCurrent">0</span>
 <input id="moveLen" type="range" min="25" max="2000" value="500" step="25">
 Move Length: <span id="moveLenDisplay">500</span>ms
 
+<hr>
+
 <h3>Stats</h3>
 Games Won/Lost: <span id="numWin">0</span>
 <br>
@@ -53,15 +79,26 @@ Games Drawn: <span id="numDraw">0</span>
 <br>
 Total Moves: <span id="numMovesTotal">0</span>
 
+<hr>
+<h3>About</h3>
+<p>Using <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a> and
+<a href="https://chessboardjs.com/" target="_blank">chessboardjs</a>.</p>
+<p>Icons from <a href="https://fontawesome.com" target="_blank">Font Awesome</a> (<a href="https://fontawesome.com/license" target="_blank">license</a>)</p>
+
+<!-- contact, donate, fullscreen buttons
+copy link
+version num
+linnk to my github -->
+
 <script>
 	let board, game;
-var init = function() {
+let init = function() {
 
 //--- start example JS ---
   game = new Chess();
 
-var makeRandomMove = function() {
-  var possibleMoves = game.moves();
+let makeRandomMove = function() {
+  let possibleMoves = game.moves();
 
   $('#numMovesCurrent').html(parseInt($('#numMovesCurrent').html() )+1);
 
@@ -82,7 +119,7 @@ var makeRandomMove = function() {
     return;
   }
 
-  var randomIndex = Math.floor(Math.random() * possibleMoves.length);
+  let randomIndex = Math.floor(Math.random() * possibleMoves.length);
   game.move(possibleMoves[randomIndex]);
   board.position(game.fen());
 
