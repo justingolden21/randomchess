@@ -1,4 +1,4 @@
-# <img src="img/chesspieces/wikipedia/bK.png"> Random Chess
+# <img src="icon-chess.svg" width="64px"> Random Chess
 
 Watch random games of chess. Pass the time or use as a fun screensaver
 
