@@ -34,7 +34,7 @@ keep track of winners?
 <h3>Random Chess</h3>
 
 <div id="board" style="width: 400px"></div>
-
+Moves this game: <span id="numMovesCurrent">0</span>
 
 <h3>Settings</h3>
 
@@ -49,6 +49,8 @@ Move Length: <span id="moveLenDisplay">500</span>ms
 Games Won/Lost: <span id="numWin">0</span>
 <br>
 Games Drawn: <span id="numDraw">0</span>
+<br>
+Total Moves: <span id="numMovesTotal">0</span>
 
 <script>
 	let board, game;
@@ -60,6 +62,8 @@ var init = function() {
 var makeRandomMove = function() {
   var possibleMoves = game.moves();
 
+  $('#numMovesCurrent').html(parseInt($('#numMovesCurrent').html() )+1);
+
   // exit if the game is over
   if (game.game_over() || game.in_draw() || possibleMoves.length === 0) { 
 
@@ -68,11 +72,11 @@ var makeRandomMove = function() {
 
   	//make new game
   	if($('#repeat').is(':checked') ) {
-		game = new Chess();
-		board = ChessBoard('board', 'start');
-		window.setTimeout(makeRandomMove, $('#moveLen').val() );
+      $('#numMovesCurrent').html(0);
+  		game = new Chess();
+  		board = ChessBoard('board', 'start');
+  		window.setTimeout(makeRandomMove, $('#moveLen').val() );
   	}
-
 
     return;
   }
@@ -104,6 +108,7 @@ function addGame(draw, numMoves) {
 	} else {
 		$('#numWin').html(parseInt($('#numWin').html() )+1);
 	}
+  $('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
   console.log('Draw? ' + draw + ' Moves: ' + numMoves);
 }
 
