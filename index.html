@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- TODO:
+<!-- TODO: make google chart of barchart colored for each outcome: checkmate, stalemate etc
 IDEAS: repeat for x moves, x time, or x games?
 NOTE: all files are local so can easily be converted to web app or desktop app-->
 
@@ -62,9 +62,11 @@ Move Length: <span id="moveLenDisplay">500</span>ms
 
 <hr>
 <h3>Stats</h3>
-Games Won/Lost: <span id="numWin">0</span>
+Games Checkmated: <span id="numWin">0</span>
 <br>
-Games Drawn: <span id="numDraw">0</span>
+Games Drawn: <span id="numDraw">0</span> 
+<br>
+(insufficient material: <span id="numInsuff">0</span>, stalemate: <span id="numStale">0</span>, threefold repetiton: <span id="numThree">0</span>, 50 move rule: <spen id="numFift">0</spen>)
 <br>
 Total Moves: <span id="numMovesTotal">0</span>
 <br>
@@ -90,14 +92,12 @@ Icons from <a href="https://fontawesome.com" target="_blank">Font Awesome</a> (<
 let board, game;
 
 let makeRandomMove = function() {
-  let possibleMoves = game.moves();
-
   //increment move display
   $('#numMovesCurrent').html(parseInt($('#numMovesCurrent').html() )+1);
 
   //if game over, log game, start new game if checked, then end function
-  if(game.game_over()||game.in_draw()||possibleMoves.length===0) {
-    addGame(game.in_draw(), game.history().length);
+  if(game.game_over() ) {
+    addGame(game);
     if($('#repeat').is(':checked') ) {
       newGame();
     }
@@ -105,6 +105,7 @@ let makeRandomMove = function() {
   }
 
   //make random move
+  let possibleMoves = game.moves();
   let randomIndex = Math.floor(Math.random() * possibleMoves.length);
   game.move(possibleMoves[randomIndex]);
   board.position(game.fen());
@@ -139,14 +140,27 @@ function newGame() {
 }
 
 //add game to stats and history
-function addGame(draw, numMoves) {
+function addGame(game) {
+  console.log(game);
+  let numMoves = game.history().length;
+  let draw = game.in_draw(); 
 	if(draw) {
 		$('#numDraw').html(parseInt($('#numDraw').html() )+1);
 	} else {
 		$('#numWin').html(parseInt($('#numWin').html() )+1);
 	}
   $('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
-  $('#historyArea').val( (draw?'Draw':'Win/loss') + ' in ' + numMoves + ' moves.\n' + $('#historyArea').val() );
+  let gameEnd = game.insufficient_material() ? 'Draw-Insufficient Material' : game.in_checkmate() ? 'Checkmate' : game.in_stalemate() ? 'Draw-Stalemate' : game.in_threefold_repetition() ? 'Draw-Threefold Repetition' : game.in_draw() ? 'Draw-50 Move Rule' : 'ERROR';
+  let idx = game.insufficient_material() ? 0 : game.in_stalemate() ? 1 : game.in_threefold_repetition() ? 2 : game.in_draw() ? 3 : -1;
+  if(idx!=-1) {
+    let names = ['#numInsuff','#numStale','#numThree','#numFift'];
+    $(names[idx]).html(parseInt($(names[idx]).html() )+1);
+  }
+
+  $('#historyArea').val( gameEnd + ' in ' + numMoves + ' moves.\n' + $('#historyArea').val() );
+
+
+
 }
 
 //-------- utility --------
