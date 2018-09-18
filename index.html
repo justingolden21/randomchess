@@ -64,7 +64,7 @@ var makeRandomMove = function() {
   if (game.game_over() || game.in_draw() || possibleMoves.length === 0) { 
 
   	//track game
-  	addGame(game.in_draw() );
+  	addGame(game.in_draw(), game.history().length);
 
   	//make new game
   	if($('#repeat').is(':checked') ) {
@@ -98,12 +98,13 @@ $('#moveLen').on('change', function() {
 }; // end init()
 $(document).ready(init);
 
-function addGame(draw) {
+function addGame(draw, numMoves) {
 	if(draw) {
 		$('#numDraw').html(parseInt($('#numDraw').html() )+1);
 	} else {
 		$('#numWin').html(parseInt($('#numWin').html() )+1);
 	}
+  console.log('Draw? ' + draw + ' Moves: ' + numMoves);
 }
 
 
