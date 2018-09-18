@@ -1,19 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- TODO
-
-textarea console of history with num moves and win/loss or tie
-
-make a modal for my stuff
-more options:
-repeat for x moves, x time, or x games?
-multiple games going at once?
-
-all files local so can easily be converted to web app or desktop app
-
-edit css
-	 -->
+<!-- TODO:
+IDEAS: repeat for x moves, x time, or x games?
+NOTE: all files are local so can easily be converted to web app or desktop app-->
 
 <title>Random Chess</title>
 <meta charset="utf-8">
@@ -22,20 +12,15 @@ edit css
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Watch random games of chess. Pass the time or use as a fun screensaver">
 <meta name="keywords" content="random chess, chess, random, screensaver, wallpaper, background, random game">
-
 <link rel="icon" href="pieces/bK.png" type="image/png">
 
 <meta id="theme1" name="theme-color" content="#fff">
 <meta id="theme2" name="msapplication-navbutton-color" content="#fff">
 <meta id="theme3" name="apple-mobile-web-app-status-bar-style" content="#fff">
 
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 <script src="jquery.js"></script>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"></link>
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous"> -->
-
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/all.css" integrity="sha384-O8whS3fhG2OnA5Kas0Y9l3cfpmYjapjI0E4theH4iuMD+pLhbf6JI0jIMfYcK3yZ" crossorigin="anonymous">
 <script src="chessjs/chess.min.js"></script>
 <script src="chessboardjs/js/chessboard-0.3.0.min.js"></script>
 <link rel="stylesheet" href="chessboardjs/css/chessboard-0.3.0.min.css">
@@ -58,90 +43,102 @@ edit css
 <h3> <img src="icon-chess.svg" width="32px"> Random Chess <img src="icon-chess.svg" width="32px"> </h3>
 <p>Watch random games of chess. Pass the time or use as a fun screensaver</p>
 
+<div class="row">
+<div class="col-md-8">
 
 <div id="board" style="width: 400px"></div>
 Moves this game: <span id="numMovesCurrent">0</span>
 
+</div>
+<div class="col-md-4">
+
 <hr>
 <h3>Settings</h3>
-
 <input id="repeat" checked type="checkbox">
 <label for="repeat">Start a new game after previous one finishes</label>
 <br>
-
-<input id="moveLen" type="range" min="25" max="2000" value="500" step="25">
 Move Length: <span id="moveLenDisplay">500</span>ms
+<input id="moveLen" type="range" min="25" max="2000" value="500" step="25">
 
 <hr>
-
 <h3>Stats</h3>
 Games Won/Lost: <span id="numWin">0</span>
 <br>
 Games Drawn: <span id="numDraw">0</span>
 <br>
 Total Moves: <span id="numMovesTotal">0</span>
+<br>
+<textarea id="historyArea" class="form-control"></textarea>
+
+</div>
+</div>
 
 <hr>
 <h3>About</h3>
-<p>Using <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a> and
-<a href="https://chessboardjs.com/" target="_blank">chessboardjs</a>.</p>
-<p>Icons from <a href="https://fontawesome.com" target="_blank">Font Awesome</a> (<a href="https://fontawesome.com/license" target="_blank">license</a>)</p>
+<p>Made with <a href="https://github.com/jhlywa/chess.js" target="_blank">chess.js</a> and
+<a href="https://chessboardjs.com/" target="_blank">chessboardjs</a>. 
+Icons from <a href="https://fontawesome.com" target="_blank">Font Awesome</a> (<a href="https://fontawesome.com/license" target="_blank">license</a>).</p>
+<p>Made by <a href="https://justingolden21.github.io" target="_blank">Justin Golden</a>.</p>
+<p>V.1.0.3</p>
 
-<!-- contact, donate, fullscreen buttons
-copy link
-version num
-linnk to my github -->
+<button title="email me" class="btn btn-default btn-sm" onclick="window.open('mailto:justingolden@rgbstudios.org','_blank');"> <i class="fas fa-envelope"></i> Contact</button>
+<button title="donate via paypal" class="btn btn-default btn-sm" onclick="window.open('https://www.paypal.me/RGBStudios','_blank');"> <i class="fas fa-donate"></i> Donate</button>
+<button title="copy website url" class="btn btn-default btn-sm" onclick="copyUrl();"> <i class="fas fa-copy"></i> Copy</button>
+<button title="toggle fullscreen" class="btn btn-default btn-sm" onclick="toggleFullscreen();"> <i class="fas fa-arrows-alt"></i> Fullscreen</button>
 
 <script>
-	let board, game;
-let init = function() {
-
-//--- start example JS ---
-  game = new Chess();
+let board, game;
 
 let makeRandomMove = function() {
   let possibleMoves = game.moves();
 
+  //increment move display
   $('#numMovesCurrent').html(parseInt($('#numMovesCurrent').html() )+1);
 
-  // exit if the game is over
-  if (game.game_over() || game.in_draw() || possibleMoves.length === 0) { 
-
-  	//track game
-  	addGame(game.in_draw(), game.history().length);
-
-  	//make new game
-  	if($('#repeat').is(':checked') ) {
-      $('#numMovesCurrent').html(0);
-  		game = new Chess();
-  		board = ChessBoard('board', 'start');
-  		window.setTimeout(makeRandomMove, $('#moveLen').val() );
-  	}
-
+  //if game over, log game, start new game if checked, then end function
+  if(game.game_over()||game.in_draw()||possibleMoves.length===0) {
+    addGame(game.in_draw(), game.history().length);
+    if($('#repeat').is(':checked') ) {
+      newGame();
+    }
     return;
   }
 
+  //make random move
   let randomIndex = Math.floor(Math.random() * possibleMoves.length);
   game.move(possibleMoves[randomIndex]);
   board.position(game.fen());
 
+  //set timeout to make next move
   window.setTimeout(makeRandomMove, $('#moveLen').val() );
 };
 
-board = ChessBoard('board', 'start');
+$(document).ready(function() {
+  newGame();
 
-window.setTimeout(makeRandomMove, 50);
+  //update ui with range input
+  $('#moveLen').on('input', function() {
+  	$('#moveLenDisplay').html($(this).val() );
+  });
 
+  //if user checks checkbox when game is over to make it start a new game
+  $('#repeat').on('change', function() {
+    if($(this).is(':checked') && (game.game_over()||game.in_draw()||possibleMoves.length===0) ) {
+      newGame();
+    }
+  });
 
-$('#moveLen').on('change', function() {
-	$('#moveLenDisplay').html($(this).val() );
-})
+});
 
-//--- end example JS ---
+function newGame() {
+  //set current moves to 0, reset game, and set timeout for first move
+  $('#numMovesCurrent').html(0);
+  game = new Chess();
+  board = ChessBoard('board', 'start');
+  window.setTimeout(makeRandomMove, $('#moveLen').val() );
+}
 
-}; // end init()
-$(document).ready(init);
-
+//add game to stats and history
 function addGame(draw, numMoves) {
 	if(draw) {
 		$('#numDraw').html(parseInt($('#numDraw').html() )+1);
@@ -149,10 +146,39 @@ function addGame(draw, numMoves) {
 		$('#numWin').html(parseInt($('#numWin').html() )+1);
 	}
   $('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
-  console.log('Draw? ' + draw + ' Moves: ' + numMoves);
+  $('#historyArea').val( (draw?'Draw':'Win/loss') + ' in ' + numMoves + ' moves.\n' + $('#historyArea').val() );
 }
 
+//-------- utility --------
+function copyUrl() {
+  let tmp = $('<input type="text">').appendTo(document.body);
+  tmp.val(window.location.href);
+  tmp.select();
+  document.execCommand('copy');
+  tmp.remove();
+}
 
+//https://stackoverflow.com/questions/3900701/onclick-go-full-screen?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+function toggleFullscreen() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||    
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {  
+      document.documentElement.requestFullScreen();  
+    } else if (document.documentElement.mozRequestFullScreen) {  
+      document.documentElement.mozRequestFullScreen();  
+    } else if (document.documentElement.webkitRequestFullScreen) {  
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);  
+    }  
+  } else {  
+    if (document.cancelFullScreen) {  
+      document.cancelFullScreen();  
+    } else if (document.mozCancelFullScreen) {  
+      document.mozCancelFullScreen();  
+    } else if (document.webkitCancelFullScreen) {  
+      document.webkitCancelFullScreen();  
+    }  
+  }  
+}
 </script>
 </body>
 </html>

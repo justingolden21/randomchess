@@ -6,4 +6,4 @@ justingolden21.github.io/randomchess
 
 justingolden21.github.io
 
-1.0.2
+1.0.3
