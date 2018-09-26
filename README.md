@@ -18,7 +18,7 @@ Watch random games of chess. Pass the time or use as a fun screensaver
 
 - https://fontawesome.com
 
-### TODO
+### To Do
 
 - Night mode
 
