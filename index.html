@@ -74,11 +74,11 @@ Move Length: <span id="moveLenDisplay">500</span>ms
 <h3>Stats</h3>
 Games Checkmated: <span id="numWin">0</span>
 <br>
-(white won: <span id="numWhiteWin">0</span>, black won: <span id="numBlackWin">0</span>)
+<small>(white won: <span id="numWhiteWin">0</span>, black won: <span id="numBlackWin">0</span>)</small>
 <br>
 Games Drawn: <span id="numDraw">0</span> 
 <br>
-(insufficient material: <span id="numInsuff">0</span>, stalemate: <span id="numStale">0</span>, threefold repetiton: <span id="numThree">0</span>, 50 move rule: <spen id="numFift">0</spen>)
+<small>(insufficient material: <span id="numInsuff">0</span>, stalemate: <span id="numStale">0</span>, threefold repetiton: <span id="numThree">0</span>, 50 move rule: <span id="numFift">0</span>)</small>
 <br>
 Total Moves: <span id="numMovesTotal">0</span>
 <br>
@@ -121,7 +121,7 @@ let makeRandomMove = function() {
   let possibleMoves = game.moves();
   let randomIndex = Math.floor(Math.random() * possibleMoves.length);
   game.move(possibleMoves[randomIndex]);
-  board.position(game.fen());
+  board.position(game.fen() );
 
   //set timeout to make next move
   window.setTimeout(makeRandomMove, $('#moveLen').val() );
