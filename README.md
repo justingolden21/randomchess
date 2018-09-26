@@ -1,4 +1,4 @@
-# <img src="pieces/bP.svg" width="32px"> Random Chess
+# <img src="pieces/bP.svg" width="32px"> <a href="https://justingolden21.github.io/randomchess">Random Chess</a>
 
 https://justingolden21.github.io/randomchess
 
