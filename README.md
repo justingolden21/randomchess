@@ -18,6 +18,12 @@ Watch random games of chess. Pass the time or use as a fun screensaver
 
 - https://fontawesome.com
 
+### TODO
+
+- Night mode
+
+- Download and upload stats
+
 <hr>
 
 ### About
