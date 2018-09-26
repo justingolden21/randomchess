@@ -1,0 +1,5 @@
+test if white/black win tracking works
+
+download/upload stats?
+
+night mode?

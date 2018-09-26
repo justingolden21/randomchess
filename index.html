@@ -22,7 +22,7 @@ Shortest Checkmate: 8 moves (second place: 54 moves)
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Watch random games of chess. Pass the time or use as a fun screensaver">
 <meta name="keywords" content="random chess, chess, random, screensaver, wallpaper, background, random game">
-<link rel="icon" href="pieces/bK.png" type="image/png">
+<link rel="icon" href="favicon.png" type="image/png">
 
 <meta id="theme1" name="theme-color" content="#fff">
 <meta id="theme2" name="msapplication-navbutton-color" content="#fff">
@@ -73,6 +73,8 @@ Move Length: <span id="moveLenDisplay">500</span>ms
 <hr>
 <h3>Stats</h3>
 Games Checkmated: <span id="numWin">0</span>
+<br>
+(white won: <span id="numWhiteWin">0</span>, black won: <span id="numBlackWin">0</span>)
 <br>
 Games Drawn: <span id="numDraw">0</span> 
 <br>
@@ -152,12 +154,19 @@ function newGame() {
 //add game to stats and history
 function addGame(game) {
   console.log(game);
+  console.log('Checkmate? ' + game.in_checkmate() );
+  console.log('Turn: ' + game.turn() );
   let numMoves = game.history().length;
   let draw = game.in_draw(); 
 	if(draw) {
 		$('#numDraw').html(parseInt($('#numDraw').html() )+1);
 	} else {
 		$('#numWin').html(parseInt($('#numWin').html() )+1);
+		if(game.turn()=='w') {
+			$('#numBlackWin').html(parseInt($('#numBlackWin').html() )+1);
+		} else {
+			$('#numWhiteWin').html(parseInt($('#numWhiteWin').html() )+1);
+		}
 	}
   $('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
   let gameEnd = game.insufficient_material() ? 'Draw-Insufficient Material' : game.in_checkmate() ? 'Checkmate' : game.in_stalemate() ? 'Draw-Stalemate' : game.in_threefold_repetition() ? 'Draw-Threefold Repetition' : game.in_draw() ? 'Draw-50 Move Rule' : 'ERROR';
