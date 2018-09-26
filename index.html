@@ -80,7 +80,8 @@ Games Drawn: <span id="numDraw">0</span>
 <br>
 <small>(insufficient material: <span id="numInsuff">0</span>, stalemate: <span id="numStale">0</span>, threefold repetiton: <span id="numThree">0</span>, 50 move rule: <span id="numFift">0</span>)</small>
 <br>
-Total Moves: <span id="numMovesTotal">0</span>
+Total Moves: <span id="numMovesTotal">0</span>, 
+Total Games: <span id="numGamesTotal">0</span>
 <br>
 <textarea id="historyArea" class="form-control"></textarea>
 
@@ -169,27 +170,25 @@ function addGame(game) {
 			$('#numWhiteWin').html(parseInt($('#numWhiteWin').html() )+1);
 		}
 	}
-  $('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
-  let gameEnd = game.insufficient_material() ? 'Draw-Insufficient Material' : game.in_checkmate() ? 'Checkmate' : game.in_stalemate() ? 'Draw-Stalemate' : game.in_threefold_repetition() ? 'Draw-Threefold Repetition' : game.in_draw() ? 'Draw-50 Move Rule' : 'ERROR';
-  let idx = game.insufficient_material() ? 0 : game.in_stalemate() ? 1 : game.in_threefold_repetition() ? 2 : game.in_draw() ? 3 : -1;
-  if(idx!=-1) {
-    let names = ['#numInsuff','#numStale','#numThree','#numFift'];
-    $(names[idx]).html(parseInt($(names[idx]).html() )+1);
-  }
+	$('#numGamesTotal').html(parseInt($('#numGamesTotal').html() )+1);
+	$('#numMovesTotal').html(parseInt($('#numMovesTotal').html() )+numMoves);
+	let gameEnd = game.insufficient_material() ? 'Draw-Insufficient Material' : game.in_checkmate() ? 'Checkmate' : game.in_stalemate() ? 'Draw-Stalemate' : game.in_threefold_repetition() ? 'Draw-Threefold Repetition' : game.in_draw() ? 'Draw-50 Move Rule' : 'ERROR';
+	let idx = game.insufficient_material() ? 0 : game.in_stalemate() ? 1 : game.in_threefold_repetition() ? 2 : game.in_draw() ? 3 : -1;
+	if(idx!=-1) {
+		let names = ['#numInsuff','#numStale','#numThree','#numFift'];
+		$(names[idx]).html(parseInt($(names[idx]).html() )+1);
+	}
 
-  $('#historyArea').val( gameEnd + ' in ' + numMoves + ' moves.\n' + $('#historyArea').val() );
-
-
-
+	$('#historyArea').val( gameEnd + ' in ' + numMoves + ' moves.\n' + $('#historyArea').val() );
 }
 
 //-------- utility --------
 function copyUrl() {
-  let tmp = $('<input type="text">').appendTo(document.body);
-  tmp.val(window.location.href);
-  tmp.select();
-  document.execCommand('copy');
-  tmp.remove();
+	let tmp = $('<input type="text">').appendTo(document.body);
+	tmp.val(window.location.href);
+	tmp.select();
+	document.execCommand('copy');
+	tmp.remove();
 }
 
 //https://stackoverflow.com/questions/3900701/onclick-go-full-screen?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa

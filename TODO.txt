@@ -3,3 +3,11 @@ test if white/black win tracking works
 download/upload stats?
 
 night mode?
+
+make fullscreen mode that only shows chess game
+
+option to pause and resume game or start new one
+
+option to display shortest and logest games of each type of ending
+
+display number of games played
