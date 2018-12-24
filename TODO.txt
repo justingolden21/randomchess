@@ -1,8 +1,8 @@
-test if white/black win tracking works
+Todo:
 
-download/upload stats?
+download/upload stats
 
-night mode?
+night mode
 
 make fullscreen mode that only shows chess game
 
@@ -17,3 +17,17 @@ modal about chess and game endings
 option to play against random chessbot
 
 option to display shortest and logest games of each type of ending
+
+================================
+
+Later:
+
+make google chart of barchart colored for each outcome: checkmate, stalemate etc
+
+display min, max, and avg for each. x axis is num moves y axis is num occurences. 
+
+================================
+
+Maybe:
+
+repeat for x moves, x time, or x games?
