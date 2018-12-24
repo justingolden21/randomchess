@@ -23,6 +23,8 @@ In addition to white or black checkmating, there are several ways to draw a game
 - Threefold repetiton: the exact same board state has occured three times in a row
 - 50 move rule: If there have been no captures made and no pawns moved in 50 moves, it is also considered a draw
 
+For more on insufficient material, go here: http://www.e4ec.org/immr.html
+
 ### Stats
 
 I've noticed that about 70-80% of games end in draws, mostly insufficient material and 50 move rule.
