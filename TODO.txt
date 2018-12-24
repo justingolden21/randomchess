@@ -14,4 +14,6 @@ option to go even slower
 
 modal about chess and game endings
 
+option to play against random chessbot
+
 option to display shortest and logest games of each type of ending
