@@ -8,6 +8,10 @@ make fullscreen mode that only shows chess game
 
 option to pause and resume game or start new one
 
-option to display shortest and logest games of each type of ending
+option to go step by step for moves, and go backwards
 
-display number of games played
+option to go even slower
+
+modal about chess and game endings
+
+option to display shortest and logest games of each type of ending
