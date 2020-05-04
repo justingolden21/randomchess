@@ -63,11 +63,13 @@ Moves this game: <span id="numMovesCurrent">0</span>
 
 <hr>
 <h3>Settings</h3>
-<input id="repeat" checked type="checkbox">
-<label for="repeat">Start a new game after previous one finishes</label>
-<br>
+
+<div class="custom-control custom-checkbox my-2">
+  <input checked type="checkbox" class="custom-control-input" id="repeat">
+  <label class="custom-control-label" for="repeat">Start a new game after previous one finishes</label>
+</div>
 Move Length: <span id="moveLenDisplay">500</span>ms
-<input id="moveLen" type="range" min="25" max="2000" value="500" step="25">
+<input id="moveLen" type="range" class="custom-range" min="25" max="2000" value="500" step="25">
 
 <hr>
 <h3>Stats</h3>
